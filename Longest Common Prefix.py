@@ -1,24 +1,12 @@
 class Solution(object):
     def longestCommonPrefix(self, strs):
-        """
-        :type strs: List[str]
-        :rtype: str
-        """
-        if not strs:
-            return ""
-        if len(strs) == 1:
-            return strs[0]
-        ans = strs[0]
-        for k in range(1, len(strs)):
-            d = ""
-            for i in range(min(len(ans), len(strs[k]))):
-                if ans[i] == strs[k][i]:
-                    d += ans[i]
-                else:
-                    break
-            ans = d
-        return ans
+        prefix = ''
+        # * is the unpacking operator, essential here
+        for z in zip(*strs):
+            print(z)
+                break
+        return prefix
 
 a = Solution()
 c = ["aa", "a"]
-print(a.longestCommonPrefix(c))
+a.longestCommonPrefix(c)

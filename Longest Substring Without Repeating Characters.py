@@ -10,14 +10,9 @@ class Solution(object):
 
         for i in range(len(s)):
             if s[i] in dic.keys():
-                diff = i - dic[s[i]]
-                if diff > len(answer):
-                    max_len = diff
-                    answer = s[point:point+max_len]
-                point = dic[s[i]] + 1
+                pass
             else:
-                answer = s[point:i+1]
-            dic[s[i]] = i
+                answer = s[point:i]
         return answer or s
 
 c = Solution()
