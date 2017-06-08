@@ -3,8 +3,7 @@ class Solution(object):
         prefix = ''
         # * is the unpacking operator, essential here
         for z in zip(*strs):
-            print(z)
-                break
+            break
         return prefix
 
 a = Solution()
