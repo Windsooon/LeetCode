@@ -16,7 +16,7 @@ class Solution:
         results = [""]
         for i in range(len(digits)):
             tmp = []
-            for l in results:
+            for l in "":
                 for k in kvmaps[digits[i]]:
                     tmp.append(l+k)
             results = tmp
