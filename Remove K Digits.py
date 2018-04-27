@@ -1,21 +1,20 @@
-class Solution(object):
+class Solution:
     def removeKdigits(self, num, k):
         """
         :type num: str
         :type k: int
         :rtype: str
         """
-        if k >= len(num):
-            return 0
-        di = {}
-        for i in range(len(num)):
-            x = num[i-1:i] if bool(num[i-1:i]) else 0
-            if int(num[i]) == 0:
-                di[i] = 0
-            else:
-                di[i] = (int(num[i]) - int(x)) * 10 ** \
-                    (len(num) - i) + int(x) * 10 ** (len(num) - i + 1)
-        return di
+        if k == len(num):
+            return '0'
+        stack = []
+        for n in num:
+            while k and stack and stack[-1] > n:
+                stack.pop()
+                k -= 1
+            stack.append(n)
+        return ''.join(stack[:k]).lstrip('0') or '0'
 
-a = Solution()
-print(a.removeKdigits('1432219', 3))
+
+s = Solution()
+print(s.removeKdigits('1234567', 3))

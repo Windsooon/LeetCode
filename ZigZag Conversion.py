@@ -1,18 +1,27 @@
 class Solution(object):
     def convert(self, s, numRows):
         """
-        not by myself
         :type s: str
         :type numRows: int
         :rtype: str
         """
-        if numRows == 1:
-            return s
-        rows = [''] * numRows
-        num = (numRows-1)*2
-        for i, item in enumerate(s):
-            if i % num >= numRows:
-                rows[(num - i % num) % numRows] += item
-            else:
-                rows[i % num] += item
-        return ''.join(rows)
+        stack_lst = [''] * numRows
+        i = 0
+        for k, v in enumerate(s):
+            stack_lst[i] += v
+            if i == 0:
+                min = True
+                i += 1
+            elif i < numRows-1:
+                if min:
+                    i += 1
+                else:
+                    i -= 1
+            elif i == numRows-1:
+                min = False
+                i -= 1
+        return ''.join(stack_lst)
+
+
+s = Solution()
+print(s.convert('AB', 1))
