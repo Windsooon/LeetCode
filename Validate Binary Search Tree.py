@@ -1,26 +1,40 @@
-class TreeNode(object):
+# Definition for a binary tree node.
+class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
 
-class Solution(object):
-    def isSameTree(self, p, q):
+class Solution:
+    def isValidBST(self, root):
         """
-        :type p: TreeNode
-        :type q: TreeNode
+        :type root: TreeNode
         :rtype: bool
         """
-        if not p and not q:
-            return True
-        if p != q:
-            return False
-        self.isSameTree(p.left, q.left)
-        self.isSameTree(p.right, q.right)
+        # if the tree is empty
+        self.smallest = float('-inf')
 
-p = TreeNode(0)
-q = TreeNode(0)
+        # inorder for in the tree
+        def inorder(root):
+            if not root:
+                return True
+            if not inorder(root.left):
+                return False
+            if root.val <= self.smallest:
+                ans = False
+            else:
+                self.smallest = root.val
+                ans = True
+            if not inorder(root.right):
+                return False
+            return ans
+        return inorder(root)
+
+
+a = TreeNode(1)
+b = TreeNode(1)
+b.left = a
 
 s = Solution()
-print(s.isSameTree(p, q))
+print(s.isValidBST(b))
