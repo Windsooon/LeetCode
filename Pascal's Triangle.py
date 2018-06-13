@@ -1,10 +1,11 @@
 class Solution:
     def generate(self, numRows):
-        ans = [[1] * (i+1) for i in range(numRows)]
+        ans = [1]
+        # 1, 2, 1
         for i in range(numRows):
-            for j in range(1, i):
-                ans[i][j] = ans[i-1][j-1] + ans[i-1][j]
-        return ans
+            # 2
+            for j in range(len(ans)-1):
+                ans = ans.append(ans[j] + ans[j+1]  
 
 
 s = Solution()

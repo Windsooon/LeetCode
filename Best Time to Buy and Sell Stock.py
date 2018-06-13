@@ -4,18 +4,14 @@ class Solution:
         :type prices: List[int]
         :rtype: int
         """
-        if len(prices) <= 1:
-            return 0
-        profit, min_value = 0, prices[0]
-        for i in range(len(prices)):
-            profit = max(profit, prices[i]-min_value)
-            if i == len(prices)-1:
-                break
-            if prices[i+1] > prices[i]:
-                min_value = min(min_value, prices[i])
-        return profit
+        max_cur, ans = 0, 0
+        for p in range(1, len(prices)):
+            max_cur += prices[p] - prices[p-1]
+            max_cur = max(0, max_cur)
+            print(max_cur)
+            ans = max(ans, max_cur)
+        return ans
 
 
 s = Solution()
 print(s.maxProfit([7,1,5,3,6,4]))
-print(s.maxProfit([7,6,4,3,1]))
