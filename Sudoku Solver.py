@@ -1,27 +1,28 @@
 import copy
 
+
 class Solution(object):
     def solveSudoku(self, board):
         """
         :type board: List[List[str]]
         :rtype: void Do not return anything, modify board in-place instead.
         """
-        row, column = self.get_first_dot(board)
-        # print((row, column))
-        # import pdb; pdb.set_trace()
-        # solved
-        if (row, column) == (-1, -1):
-            return board
+        root = [board]
+        self.dfs(root)
 
-        for i in range(1, 10):
-            new_board = copy.deepcopy(board)
-            new_board[row][column] = str(i)
-            if self.isValidSudoku(new_board):
-                result = self.solveSudoku(new_board)
-                if result:
-                    board = result
-                    return None
-        return False
+    def dfs(self, lst):
+        while lst:
+            for board in lst:
+                row, column = self.get_first_dot(board)
+                if (row, column) == (-1, -1):
+                    return board
+                for i in range(1, 10):
+                    # import pdb; pdb.set_trace()
+                    new_board = copy.deepcopy(board)
+                    new_board[row][column] = str(i)
+                    if self.isValidSudoku(new_board):
+                        lst.append(new_board)
+                lst.remove(board)
 
     def get_first_dot(self, board):
         for a in range(9):
