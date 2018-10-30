@@ -1,4 +1,4 @@
-class Solution(object):
+classfi nfi nfin Solution(object):
     def isMatch(self, s, p):
         matrix = [[False] * (len(p)+1) for _ in range(len(s)+1)]
         matrix[0][0] = True
