@@ -1,4 +1,4 @@
-from collections import deque
+from collections import de
 
 
 class MyStack(object):
@@ -7,7 +7,7 @@ class MyStack(object):
         """
         Initialize your data structure here.
         """
-        self.d = deque()
+        self.q = Queue()
 
     def push(self, x):
         """
@@ -15,39 +15,37 @@ class MyStack(object):
         :type x: int
         :rtype: void
         """
-        self.d.append(x)
+        self.tem = Queue()
+        self.tem.put(x)
+        self.tem.put(self.q)
+        self.q = self.tem
 
     def pop(self):
         """
         Removes the element on top of the stack and returns that element.
         :rtype: int
         """
-        return self.d.pop()
-
+        return self.q.get()
 
     def top(self):
         """
         Get the top element.
         :rtype: int
         """
-        if self.empty():
-            return
-        tem = self.d.pop()
-        print(tem)
-        self.d.append(tem)
-        return tem
+
+        
 
     def empty(self):
         """
         Returns whether the stack is empty.
         :rtype: bool
         """
-        return not bool(self.d)
+        
 
 
 # Your MyStack object will be instantiated and called as such:
-obj = MyStack()
-obj.push('1')
-obj.push('2')
-param_3 = obj.top()
-print(param_3)
+# obj = MyStack()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.empty()

@@ -1,20 +1,19 @@
 class Solution:
     def removeKdigits(self, num, k):
-        """
-        :type num: str
-        :type k: int
-        :rtype: str
-        """
-        if k == len(num):
-            return '0'
         stack = []
-        for n in num:
-            while k and stack and stack[-1] > n:
+        for d in num:
+            while k and stack and stack[-1] > d:
                 stack.pop()
                 k -= 1
-            stack.append(n)
-        return ''.join(stack[:k]).lstrip('0') or '0'
+            stack.append(d)
+        while k:
+            stack.pop()
+            k -= 1
+        return ''.join(stack).lstrip('0') or '0'
 
 
 s = Solution()
-print(s.removeKdigits('1234567', 3))
+assert s.removeKdigits('112', 1) == '11'
+assert s.removeKdigits('10200', 1) == '200'
+assert s.removeKdigits('1432219', 3) == '1219'
+assert s.removeKdigits('7865', 2) == '65'

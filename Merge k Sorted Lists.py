@@ -4,23 +4,47 @@ class ListNode(object):
         self.next = None
 
 
-class Solution(object):
+class Solution:
     def mergeKLists(self, lists):
-        an = []
-        while lists and lists[0]:
-            min_head = lists[0].val
-            for k, v in enumerate(lists):
-                if not v:
-                    lists.pop(k)
-                if v.val <= min_head:
-                    min_head = v.val
-                    answer = (v.val, k)
-            lists[k] = lists[k].next
-            an.append(answer[0])
-        return an
+        res = current = ListNode(0)
+        next = self.get_next(lists)
+        while next:
+            current.next = next
+            current = current.next
+            next = self.get_next(lists)
+        return res.next
 
-a = Solution()
+    def get_next(self, lists):
+        min_val = float('inf')
+        min_index = -1
+        for i in range(len(lists)):
+            if lists[i] and lists[i].val < min_val:
+                min_val = lists[i].val
+                min_index = i
+        if min_index == -1:
+            return
+        tem = lists[min_index]
+        lists[min_index] = lists[min_index].next
+        return tem
 
-lists1 = [[1]]
-lists2 = [[]]
-lists3 = []
+
+a = ListNode(1)
+b = ListNode(4)
+c = ListNode(5)
+a.next = b
+b.next = c
+d = ListNode(1)
+e = ListNode(3)
+f = ListNode(4)
+d.next = e
+e.next = f
+g = ListNode(2)
+h = ListNode(6)
+g.next = h
+
+lists = [a, d, g]
+s = Solution()
+z = s.mergeKLists(lists)
+while z:
+    print(z.val)
+    z = z.next

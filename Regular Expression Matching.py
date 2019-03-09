@@ -1,24 +1,45 @@
-classfi nfi nfin Solution(object):
+class Solution(object):
     def isMatch(self, s, p):
-        matrix = [[False] * (len(p)+1) for _ in range(len(s)+1)]
-        matrix[0][0] = True
-        for i in range(2, len(p)+1):
-            matrix[0][i] = matrix[0][i-2] and p[i-1] == '*'
-
-        for s_i in range(len(s)+1):
-            for p_i in range(len(p)+1):
-                if p_v == '.' or p_v == s_v:
-                elif p_v == '*':
-        return matrix[-1][-1]
+        s = ' ' + s
+        p = ' ' + p
+        lst = [False] * len(p)
+        lst[0] = True
+        for l in range(2, len(p)):
+            lst[l] = True if lst[l-2] and p[l] == '*' else False
+        old = lst[:]
+        # [True False]
+        for i in range(1, len(s)):
+            # breakpoint()
+            for j in range(len(p)):
+                if j == 0:
+                    lst[j] = False
+                else:
+                    if p[j] == '*':
+                            lst[j] = (
+                                lst[j-2] or
+                                lst[j-1] or
+                                ((s[i] == s[i-1] or p[j-1] == '.') and lst[j]))
+                    else:
+                        lst[j] = old[j-1] and (p[j] == s[i] or p[j] == '.')
+            old = lst[:]
+        return lst[-1]
 
 
 s = Solution()
+assert s.isMatch('ab', '.*..') is True
+assert s.isMatch('aaa', 'a') is False
+assert s.isMatch('mississippi', 'mis*is*p*.') is False
+assert s.isMatch('ab', '.*') is True
+assert s.isMatch('', '.*') is True
+assert s.isMatch('aab', 'c*a*b') is True
+assert s.isMatch('', '') is True
+assert s.isMatch('b', 'ba*') is True
+assert s.isMatch('ba', 'ba*') is True
+assert s.isMatch('baa', 'ba*') is True
 assert s.isMatch('a', '') is False
 assert s.isMatch('abc', 'a.c') is True
 assert s.isMatch('aa', 'a') is False
 assert s.isMatch('aa', 'a*') is True
-assert s.isMatch('ab', '.*') is True
+assert s.isMatch('cab', 'c.*') is True
 assert s.isMatch('abc', 'a.c') is True
-# s.isMatch('aab', 'c*a*b')
-assert s.isMatch('aab', 'c*a*b') is True
 assert s.isMatch('aaa', 'ab*ac*a') is True

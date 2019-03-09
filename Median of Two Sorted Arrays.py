@@ -5,35 +5,39 @@ class Solution(object):
         :type nums2: List[int]
         :rtype: float
         """
-        m, n = len(nums1), len(nums2)
-        if m > n:
-            nums1, nums2, m, n = nums2, nums1, n, m
-        if n == 0:
-            raise ValueError
-        imin, imax = 0, m
-        half_length = (m+n+1)//2
+        len_1, len_2 = len(nums1), len(nums2)
+        if (len_1 + len_2) == 0:
+            return
+        target = (len_1 + len_2) // 2
+        if (len_1 + len_2) % 2 != 0:
+            return self.k_element(nums1, nums2, target)
+        else:
+            return (self.k_element(nums1, nums2, target-1)
+                    + self.k_element(nums1, nums2, target)) / 2
 
-        while imin <= imax:
-            i = (imin+imax)//2
-            j = half_length - i
-            if i > 0 and nums1[i-1] > nums2[j]:
-                imax = i - 1
-            elif i < m and nums2[j-1] > nums1[i]:
-                imin = i + 1
+    def k_element(self, nums1, nums2, k):
+        if not nums1:
+            return nums2[k]
+        if not nums2:
+            return nums1[k]
+        # 1, 0, 1
+        nums1_mid, nums2_mid = len(nums1) // 2, len(nums2) // 2
+        if k > (nums1_mid + nums2_mid):
+            # [1, 3], [2]
+            if nums1[nums1_mid] < nums2[nums2_mid]:
+                return self.k_element(nums1[nums1_mid+1:], nums2, k-nums1_mid-1)
             else:
-                # i is perfect
-                if i == 0:
-                    max_of_left = nums2[j-1]
-                elif j == 0:
-                    max_of_left = nums1[j-1]
-                else:
-                    max_of_left = max(nums1[i-1], nums2[j-1])
-                if (m + n) % 2 == 1:
-                    return max_of_left
-                if i == m:
-                    min_of_right = nums2[j]
-                elif j == n:
-                    min_of_right = nums1[i]
-                else:
-                    min_of_right = min(nums1[i], nums2[j])
-                return (max_of_left + min_of_right)/2.0
+                return self.k_element(nums1, nums2[nums2_mid+1:], k-nums2_mid-1)
+        else:
+            if nums1[nums1_mid] < nums2[nums2_mid]:
+                return self.k_element(nums1, nums2[:nums2_mid], k)
+            else:
+                return self.k_element(nums1[:nums1_mid], nums2, k)
+
+
+s = Solution()
+# print(s.findMedianSortedArrays([2, 3], [4]))
+assert s.findMedianSortedArrays([], []) is None
+assert s.findMedianSortedArrays([2], [4]) == 3.0
+assert s.findMedianSortedArrays([1, 3], [2]) == 2.0
+assert s.findMedianSortedArrays([1, 2], [3, 4]) == 2.5
