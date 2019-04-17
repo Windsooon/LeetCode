@@ -5,22 +5,24 @@ class Solution:
         :type word2: str
         :rtype: int
         """
-        m, n = len(word1), len(word2)
-        matrix = [[0] * (m+1) for i in range((n+1))]
-        matrix[0][0] = 0
-        for i in range(1, n+1):
-            matrix[i][0] = i
-        for i in range(1, m+1):
-            matrix[0][i] = i
-        for k in range(1, m+1):
-            for v in range(1, n+1):
-                if word1[k-1] == word2[v-1]:
-                    matrix[v][k] = matrix[v-1][k-1]
+        word1 = ' ' + word1
+        word2 = ' ' + word2
+        # ' horse'
+        # [0, 1, 2, 3, 4, 5]
+        lst = list(range(len(word1)))
+        old = lst[:]
+        for i in range(1, len(word2)):
+            for j in range(len(word1)):
+                if j == 0:
+                    lst[j] += 1
                 else:
-                    matrix[v][k] = min(
-                        matrix[v-1][k]+1, matrix[v][k-1]+1, matrix[v-1][k-1]+1)
-        return matrix[-1][-1]
+                    if word2[i] == word1[j]:
+                        lst[j] = old[j-1]
+                    else:
+                        lst[j] = min(lst[j-1], lst[j], old[j-1]) + 1
+            old = lst[:]
+        return lst[-1]
 
 
 s = Solution()
-print(s.minDistance('abc', 'efgh'))
+print(s.minDistance('intention', 'execution'))

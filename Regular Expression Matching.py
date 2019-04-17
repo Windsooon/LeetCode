@@ -2,44 +2,21 @@ class Solution(object):
     def isMatch(self, s, p):
         s = ' ' + s
         p = ' ' + p
-        lst = [False] * len(p)
-        lst[0] = True
-        for l in range(2, len(p)):
-            lst[l] = True if lst[l-2] and p[l] == '*' else False
+        lst = [True] + [False] * (len(p)-1)
+        for l in range(2, len(lst)):
+            if p[l] == '*' and lst[l-2]:
+                lst[l] = True
+        # ' a*.*b' [True, False, True, False, True, False]
         old = lst[:]
-        # [True False]
         for i in range(1, len(s)):
-            # breakpoint()
             for j in range(len(p)):
-                if j == 0:
-                    lst[j] = False
+                if p[j] == '*':
+                    lst[j] = lst[j-1] or lst[j-2] or (lst[j] and (s[i] == s[i-1] or p[j-1] == '.'))
                 else:
-                    if p[j] == '*':
-                            lst[j] = (
-                                lst[j-2] or
-                                lst[j-1] or
-                                ((s[i] == s[i-1] or p[j-1] == '.') and lst[j]))
-                    else:
-                        lst[j] = old[j-1] and (p[j] == s[i] or p[j] == '.')
+                    lst[j] = (s[i] == p[j] or p[j] == '.') and old[j-1]
             old = lst[:]
         return lst[-1]
 
 
 s = Solution()
-assert s.isMatch('ab', '.*..') is True
-assert s.isMatch('aaa', 'a') is False
-assert s.isMatch('mississippi', 'mis*is*p*.') is False
-assert s.isMatch('ab', '.*') is True
-assert s.isMatch('', '.*') is True
-assert s.isMatch('aab', 'c*a*b') is True
-assert s.isMatch('', '') is True
-assert s.isMatch('b', 'ba*') is True
-assert s.isMatch('ba', 'ba*') is True
-assert s.isMatch('baa', 'ba*') is True
-assert s.isMatch('a', '') is False
-assert s.isMatch('abc', 'a.c') is True
-assert s.isMatch('aa', 'a') is False
-assert s.isMatch('aa', 'a*') is True
-assert s.isMatch('cab', 'c.*') is True
-assert s.isMatch('abc', 'a.c') is True
-assert s.isMatch('aaa', 'ab*ac*a') is True
+s.isMatch('abcdb', 'a*.*b')

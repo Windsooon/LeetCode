@@ -12,29 +12,27 @@ class Solution(object):
         :type k: int
         :rtype: ListNode
         """
-        def helper(pre, k):
-            a = pre
-            b = current = pre.next
-            for i in range(k):
-                next = current.next
-                current.next = pre
-                pre = current
-                current = next
-                k -= 1
-            a.next, b.next = pre, current
-            return b
-
-        count = 0
-        dummy = pre = ListNode(0)
-        size = dummy.next = pre.next = head
-        while size:
+        if not head or not head.next or k == 1:
+            return head
+        count, current = 0, head
+        while count < k:
             count += 1
-            size = size.next
-        times = count//k
-        while times:
-            pre = helper(pre, k)
-            times -= 1
-        return dummy.next
+            if current:
+                current = current.next
+            else:
+                return head
+        next = self.reverseKGroup(current, k)
+        return self.reverseK(head, k, next)
+
+    def reverseK(self, head, k, next):
+        pre = next
+        while k:
+            k -= 1
+            next = head.next
+            head.next = pre
+            pre = head
+            head = next
+        return pre
 
 
 a = ListNode(1)
@@ -47,9 +45,12 @@ b.next = c
 c.next = d
 d.next = e
 
-s = Solution()
-z = s.reverseKGroup(a, 3)
+f = ListNode(6)
 
-while z:
-    print(z.val)
-    z = z.next
+s = Solution()
+answer = s.reverseKGroup(a, 6)
+
+while answer:
+    print(answer.val)
+    answer = answer.next
+# 

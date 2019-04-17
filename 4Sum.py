@@ -28,4 +28,4 @@ class Solution(object):
         return k
 
 a = Solution()
-print(a.fourSum([-3,-2,-1,0,0,1,2,3], 0))
+print(a.fourSum([1, 0, -1, 0, -2, 2], 0))

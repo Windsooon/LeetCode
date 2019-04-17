@@ -1,18 +1,16 @@
 class Solution:
     def trap(self, height):
-        left, right = 0, len(height)-1
-        res = max_left = max_right = 0
-        while left < right:
-            max_left = max(max_left, height[left])
-            max_right = max(max_right, height[right])
-            if max_left > max_right:
-                res += max_right - height[right]
-                right -= 1
-            else:
-                res += max_left - height[left]
-                left += 1
-        return res
-
+        """
+        :type height: List[int]
+        :rtype: int
+        """
+        stack, result = [], 0
+        for i in range(len(height)):
+            while stack and height[i] > height[stack[-1]]:
+                bot = stack.pop()
+                result += 0 if not stack else (min(height[i], height[stack[-1]]) - height[bot]) * (i-stack[-1]-1)
+            stack.append(i)
+        return result
 
 s = Solution()
 print(s.trap([0,1,0,2,1,0,1,3,2,1,2,1]))

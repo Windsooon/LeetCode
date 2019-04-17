@@ -4,30 +4,26 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        if len(s) <= 1:
-            return 0
-        s += 'x'
-        max_len = 0
-        stack = []
-        for k, v in enumerate(s):
-            if v == ')' and stack and s[stack[-1]] == '(':
+        # ()(())
+        stack = [-1]
+        result = 0
+        for i in range(len(s)):
+            if s[i] == ')' and len(stack) > 1 and s[stack[-1]] == '(':
                 stack.pop()
+                result = max(result, i-stack[-1])
             else:
-                if not stack:
-                    max_len = max(max_len, k)
-                else:
-                    max_len = max(max_len, k-stack[-1]-1)
-                stack.append(k)
-        if not stack:
-            return len(stack)
-        else:
-            return max_len
+                stack.append(i)
+        return result
 
 
 s = Solution()
-print(s.longestValidParentheses('('))
-print(s.longestValidParentheses(')('))
-print(s.longestValidParentheses(')()'))
-print(s.longestValidParentheses('(()'))
-print(s.longestValidParentheses(')()())'))
-print(s.longestValidParentheses('()(()'))
+assert (s.longestValidParentheses('(')) == 0
+assert (s.longestValidParentheses(')(')) == 0
+assert (s.longestValidParentheses('()')) == 2
+assert (s.longestValidParentheses('()()')) == 4
+assert (s.longestValidParentheses(')()')) == 2
+assert (s.longestValidParentheses('(()')) == 2
+assert (s.longestValidParentheses('(()(((()')) == 2
+assert (s.longestValidParentheses(')()())')) == 4
+assert (s.longestValidParentheses('()(()')) == 2
+assert (s.longestValidParentheses('()(())')) == 6

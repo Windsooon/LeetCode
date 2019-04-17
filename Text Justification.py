@@ -5,15 +5,15 @@ class Solution:
         :type maxWidth: int
         :rtype: List[str]
         """
-        res, cur, num_of_letters = [], [], 0
+        res, cur, num = [], [], 0
         for w in words:
-            if num_of_letters + len(w) + len(cur) > maxWidth:
-                for i in range(maxWidth - num_of_letters):
+            if len(cur) + len(w) + num > maxWidth:
+                for i in range(maxWidth-num):
                     cur[i % (len(cur)-1 or 1)] += ' '
                 res.append(''.join(cur))
-                cur, num_of_letters = [], 0
+                cur, num = [], 0
             cur += [w]
-            num_of_letters += len(w)
+            num += len(w)
         return res + [' '.join(cur).ljust(maxWidth)]
 
 
