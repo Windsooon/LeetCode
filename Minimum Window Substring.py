@@ -2,21 +2,26 @@ import collections
 
 class Solution:
     def minWindow(self, s, t):
-        need, missing = collections.Counter(t), len(t)
-        i = I = J = 0
-        for j, c in enumerate(s, 1):
-            breakpoint()
-            missing -= need[c] > 0
-            need[c] -= 1
+        dic, missing = collections.Counter(t), len(t)
+        start = 0
+        left, right = 0, len(s)
+        for i in range(len(s)):
+            if dic[s[i]] > 0:
+                missing -= 1
+            dic[s[i]] -= 1
             if not missing:
-                while i < j and need[s[i]] < 0:
-                    need[s[i]] += 1
-                    i += 1
-                if not J or j - i <= J - I:
-                    I, J = i, j
-        return s[I:J]
+                while start < len(s) and dic[s[start]] < 0:
+                    dic[s[start]] += 1
+                    start += 1
+                if i - start < right - left:
+                    left, right = start, i
+                dic[s[start]] += 1
+                start += 1
+                missing += 1
+        return s[left:right+1]
+
 
 s = Solution()
-S = "DOBECDEBANC"
+S = "ACBECDEBANC"
 T = "ABC"
 print(s.minWindow(S, T))
