@@ -6,38 +6,25 @@ class Solution(object):
         """
         if not matrix:
             return 0
-        after = self.helper(matrix)
-        max_val = 0
-        for a in after:
-            max_val = max(max_val, self.max_re(a))
-        return max_val
-
-    def max_re(self, lst):
+        # base setup
+        for m in matrix:
+            m.insert(0, '0')
+            m.append("0")
+        stack = [0]
+        cur = [0] * len(matrix[0])
         max_area = 0
-        lst.append('0')
-        stack = [-1]
-        for i in range(len(lst)):
-            while int(lst[i]) < int(lst[stack[-1]]):
-                height = int(lst[stack.pop()])
-                width = i - stack[-1] - 1
-                max_area = max(max_area, height * width)
-            stack.append(i)
-        return max_area
-
-    def helper(self, matrix):
-        pre = matrix[0]
-        after = [pre]
-        for i in range(1, len(matrix)):
-            cur = []
-            for j in range(len(pre)):
-                if matrix[i][j] == '0':
-                    cur.append(str(0))
+        for m in matrix:
+            for i in range(len(m)):
+                if m[i] == '1':
+                    cur[i] = cur[i] + 1
                 else:
-                    cur.append(str(1+int(pre[j])))
-            after.append(cur)
-            pre = cur
-        return after
-
+                    cur[i] = 0
+                while stack and cur[stack[-1]] > cur[i]:
+                    cur_height = cur[stack.pop()]
+                    cur_width = i - stack[-1] - 1
+                    max_area = max(max_area, cur_height * cur_width)
+                stack.append(i)
+        return max_area
 
 s = Solution()
 
@@ -47,4 +34,6 @@ matrix = [
   ["1","1","1","1","1"],
   ["1","0","0","1","0"]
 ]
+
+matrix = [["1"]]
 print(s.maximalRectangle(matrix))

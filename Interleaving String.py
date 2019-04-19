@@ -1,29 +1,22 @@
 class Solution:
     def isInterleave(self, s1, s2, s3):
-        """
-        :type s1: str
-        :type s2: str
-        :type s3: str
-        :rtype: bool
-        """
-        if len(s3) != len(s1) + len(s2):
+        r, c, l= len(s1), len(s2), len(s3)
+        if r+c != l:
             return False
-        if len(s1) > len(s2):
-            s1, s2 = s2, s1
-        dp = [True] * (len(s1)+1)
-        for d in range(1, len(s1)+1):
-            dp[d] = dp[d-1] and s1[d-1] == s3[d-1]
-        for s2_i in range(1, len(s2)+1):
-            dp[0] = (dp[0] and s2[s2_i-1] == s3[s2_i-1])
-            for s1_i in range(1, len(s1)+1):
-                dp[s1_i] = (dp[s1_i-1] and s1[s1_i-1] == s3[s1_i+s2_i-1]) | \
-                    dp[s1_i] and s2[s2_i-1] == s3[s1_i+s2_i-1]
-        print(dp)
-        return dp[-1]
+        stack, visited = [(0, 0)], set((0, 0))
+        while stack:
+            x, y = stack.pop()
+            if x+y == l:
+                return True
+            if x+1 <= r and s1[x] == s3[x+y] and (x+1, y) not in visited:
+                stack.append((x+1, y)); visited.add((x+1, y))
+            if y+1 <= c and s2[y] == s3[x+y] and (x, y+1) not in visited:
+                stack.append((x, y+1)); visited.add((x, y+1))
+        return False
 
 
 s = Solution()
-s1 = 'aabcc'
-s2 = 'dbbca'
-s3 = 'aadbbcbcac'
+s1 = "bbbbbabbbbabaababaaaabbababbaaabbabbaaabaaaaababbbababbbbbabbbbababbabaabababbbaabababababbbaaababaa"
+s2 = "babaaaabbababbbabbbbaabaabbaabbbbaabaaabaababaaaabaaabbaaabaaaabaabaabbbbbbbbbbbabaaabbababbabbabaab"
+s3 = "babbbabbbaaabbababbbbababaabbabaabaaabbbbabbbaaabbbaaaaabbbbaabbaaabababbaaaaaabababbababaababbababbbababbbbaaaabaabbabbaaaaabbabbaaaabbbaabaaabaababaababbaaabbbbbabbbbaabbabaabbbbabaaabbababbabbabbab"
 print(s.isInterleave(s1, s2, s3))
