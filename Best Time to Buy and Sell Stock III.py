@@ -6,14 +6,20 @@ class Solution:
         """
         if not prices:
             return 0
-        dp = [[0] * len(prices) for i in range(3)]
-        for k in range(1, 3):
-            min_val = prices[0]
-            for i in range(1, len(prices)):
-                min_val = min(min_val, prices[i] - dp[k-1][i-1])
-                dp[k][i] = max(dp[k][i-1], prices[i] - min_val)
-        return dp[2][len(prices) - 1]
+        lst = [0] * len(prices)
+        for _ in range(2):
+            # [3, 3, 5, 0, 0, 3, 1, 4]
+            old = lst[:]
+            max_profit = float('-inf')
+            for i in range(1, len(lst)):
+                # 0
+                max_profit = max(max_profit, old[i-1] - prices[i-1])
+                lst[i] = max(lst[i-1], prices[i] + max_profit)
+        return lst[-1]
 
 
 s = Solution()
 print(s.maxProfit([3, 3, 5, 0, 0, 3, 1, 4]))
+print(s.maxProfit([1,2,3,4,5]))
+print(s.maxProfit([7,6,4,3,1]))
+print(s.maxProfit([1,2,4,2,5,7,2,4,9,0]))

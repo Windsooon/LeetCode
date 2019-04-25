@@ -11,4 +11,4 @@ class Solution:
 
 s = Solution()
 print(s.numDistinct('rabbbit', 'rabbit'))
-# print(s.numDistinct('babgbag', 'bag'))
+print(s.numDistinct('babgbag', 'bag'))
