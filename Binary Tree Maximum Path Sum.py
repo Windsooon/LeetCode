@@ -28,9 +28,29 @@ class Solution(object):
             max_sum(root.left), max_sum(root.right),
             max_sum(root.left) + root.val + max_sum(root.right))
 
-a = TreeNode(2)
-b = TreeNode(-1)
+
+class Solution(object):
+    def __init__(self):
+        self.max = float('-inf')
+
+    def maxPathSum(self, root):
+        self.recursion(root)
+        return self.max
+
+    def recursion(self, node):
+        if not node:
+            return 0
+        left = self.recursion(node.left)
+        right = self.recursion(node.right)
+        self.max = max(self.max, left + node.val + right)
+        return max(node.val + max(left, right), 0)
+
+
+a = TreeNode(1)
+b = TreeNode(2)
+c = TreeNode(-3)
 a.left = b
+a.right = c
 
 s = Solution()
 print(s.maxPathSum(a))
