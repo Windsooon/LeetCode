@@ -1,20 +1,25 @@
 class Solution:
     def search(self, nums, target):
-        l, r = 0, len(nums)
-        while l < r:
-            mid = (l + r) // 2
-            if nums[mid] == target: return mid
-            if target > nums[mid]:
-                if nums[mid] < nums[0] and target >= nums[0]:
-                    r = mid
+        # [4,5,6,7,8,1,2,3], right = 7
+        left, right = 0, len(nums)-1
+        while left <= right:
+            mid = (left+right)//2
+            if target == nums[mid]:
+                return mid
+            if nums[mid] >= nums[left]:
+                if nums[left] <= target <= nums[mid]:
+                    right = mid - 1
                 else:
-                    l = mid + 1
+                    left = mid + 1
             else:
-                if nums[mid] >= nums[0] and target < nums[0]:
-                    l = mid + 1
+                if nums[mid] <= target <= nums[right]:
+                    left = mid + 1
                 else:
-                    r = mid
+                    right = mid - 1
         return -1
+
+
+
 
 
 s = Solution()
@@ -22,3 +27,5 @@ assert s.search([4,5,6,7,0,1,2], 0) == 4
 assert s.search([4,5,6,7,0,1,2], 3) == -1
 assert s.search([1,3], 3) == 1
 assert s.search([3,5,1], 3) == 0
+assert s.search([5,1,3], 3) == 2
+assert s.search([4,5,6,7,8,1,2,3], 8) == 4

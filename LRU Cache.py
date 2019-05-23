@@ -1,28 +1,17 @@
-import collections
-
-
 class LRUCache(object):
 
     def __init__(self, capacity):
         """
         :type capacity: int
         """
-        self.dic = collections.OrderedDict()
-        self.capacity = capacity
+        pass
 
     def get(self, key):
         """
         :type key: int
         :rtype: int
         """
-        if key in self.dic:
-            value = self.dic.pop(key)
-            self.dic[key] = value
-            print(self.dic[key])
-            return self.dic[key]
-        else:
-            print(-1)
-            return -1
+        pass
 
     def put(self, key, value):
         """
@@ -30,13 +19,7 @@ class LRUCache(object):
         :type value: int
         :rtype: void
         """
-        if key in self.dic:
-            self.dic.pop(key)
-            self.dic[key] = value
-            return
-        if len(self.dic) >= self.capacity:
-            self.dic.popitem(last=False)
-        self.dic[key] = value
+        pass
 
 
 lru = LRUCache(2)
