@@ -5,50 +5,24 @@ class TreeNode(object):
         self.left = None
         self.right = None
 
-
 class Solution(object):
     def maxPathSum(self, root):
-        """
-        :type root: TreeNode
-        :rtype: int
-        """
-        def max_sum(root):
-            if not root:
-                return 0
-            if not root.left and not root.right:
-                return root.val
-            return root.val + max(max_sum(root.left), max_sum(root.right), 0)
+        self.max_val = float('-inf')
+        self.dfs(root)
+        return self.max_val
 
+    def dfs(self, root):
         if not root:
             return 0
-        if not root.left and not root.right:
-            return root.val
-        return max(
-            root.val,
-            max_sum(root.left), max_sum(root.right),
-            max_sum(root.left) + root.val + max_sum(root.right))
+        left = self.dfs(root.left)
+        right = self.dfs(root.right)
+        self.max_val = max(self.max_val, root.val + left + right)
+        return max(root.val, root.val + max(left, right), 0)
 
 
-class Solution(object):
-    def __init__(self):
-        self.max = float('-inf')
-
-    def maxPathSum(self, root):
-        self.recursion(root)
-        return self.max
-
-    def recursion(self, node):
-        if not node:
-            return 0
-        left = self.recursion(node.left)
-        right = self.recursion(node.right)
-        self.max = max(self.max, left + node.val + right)
-        return max(node.val + max(left, right), 0)
-
-
-a = TreeNode(1)
+a = TreeNode(-10)
 b = TreeNode(2)
-c = TreeNode(-3)
+c = TreeNode(6)
 a.left = b
 a.right = c
 

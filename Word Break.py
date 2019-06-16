@@ -1,14 +1,13 @@
 class Solution:
     def wordBreak(self, s, wordDict):
-        dp = [False] * len(s)
-        for index in range(1, len(s)+1):
-            if s[:index] in wordDict: 
-                dp[index-1] = True
-        for index in range(len(dp)+1):
-            for i in range(index):
-                if dp[i]:
-                    if s[i+1:index] in wordDict:
-                        dp[index-1] = True
+        dp = [True] + [False] * len(s)
+        true_index = [0]
+        for i in range(1, len(dp)):
+            for t in true_index:
+                if s[t:i] in wordDict:
+                    dp[i] = True
+                    if i not in true_index:
+                        true_index.append(i)
         return dp[-1]
 
 
