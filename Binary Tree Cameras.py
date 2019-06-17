@@ -9,19 +9,28 @@ class Solution:
     def minCameraCover(self, root):
         if not root:
             return 0
-        return min(self.dfs(root), self.dfs(root.left)+self.dfs(root.right))
+        self.count = 0
+        self.root = root
+        if self.dfs(root) == 0:
+            self.count += 1
+        return self.count
 
     def dfs(self, node):
+        # no camera 0
+        # camera 2
+        # no need 1
         if not node:
-            return 0
-        if not node.left and not node.right:
             return 1
-        if node.left and node.right:
-            return 1+self.dfs(node.left.left)+self.dfs(node.left.right)+self.dfs(node.right.left)+self.dfs(node.right.right)
-        if node.left:
-            return 1+self.dfs(node.left.left)+self.dfs(node.left.right)
-        if node.right:
-            return 1+self.dfs(node.right.left)+self.dfs(node.right.right)
+        left = self.dfs(node.left)
+        right = self.dfs(node.right)
+        if left == 0 or right == 0:
+            # covered
+            self.count += 1
+            # has camera
+            return 2
+        if left == 2 or right == 2:
+            return 1
+        return 0
 
 
 a = TreeNode(0)
@@ -29,9 +38,11 @@ b = TreeNode(0)
 c = TreeNode(0)
 d = TreeNode(0)
 e = TreeNode(0)
+f = TreeNode(0)
 a.left = b
-b.left = c
+b.right = c
 c.left = d
-d.left = e
+d.right = e
+e.left = f
 s = Solution()
 print(s.minCameraCover(a))
