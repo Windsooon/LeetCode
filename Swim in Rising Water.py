@@ -1,22 +1,26 @@
 import queue
 class Solution:
     def swimInWater(self, grid):
-        copy_grid = grid[:][:]
+        dis_grid = [[float('inf')] * len(grid[0]) for i in range(len(grid))]
         self.visited = {}
         q = queue.PriorityQueue()
-        q.put((0, 0, grid[0][0]))
-        while q:
-            i, j, time = q.get()
-            copy_grid[i][j] = max(copy_grid[i][j], time)
-            self.visited[(i, j)] = True
+        # sorted by time
+        self.visited[(0, 0)] = True
+        q.put((grid[0][0], 0, 0))
+        while not q.empty():
+            time, i, j = q.get()
             for k, v in [(i+1, j), (i, j+1), (i-1, j), (i, j-1)]:
                 if self.valid(k, v, grid) and (k, v) not in self.visited:
-                    q.put((k, v))
+                    dis_grid[k][v] = min(max(time, grid[k][v]), dis_grid[k][v])
+                    self.visited[(k, v)] = True
+                    q.put((dis_grid[k][v], k, v))
+        return dis_grid[-1][-1]
 
-            
+    def valid(self, i, j, grid):
+        if 0 <= i < len(grid) and 0 <= j < len(grid[0]):
+            return True
+        return False
 
-
-    
 
 s = Solution()
 grid = [[0,2],[1,3]]
