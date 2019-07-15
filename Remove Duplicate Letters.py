@@ -7,6 +7,7 @@ class Solution(object):
             # [1, 2]
             count[ord(ele)-ord('a')] += 1
         visited = [False] * 26
+        breakpoint()
         for ele in s:
             # [0, 0]
             count[ord(ele)-ord('a')] -= 1
@@ -21,12 +22,12 @@ class Solution(object):
 
 
 s = Solution()
-assert s.removeDuplicateLetters('') == ''
-assert s.removeDuplicateLetters('ab') == 'ab'
-assert s.removeDuplicateLetters('aba') == 'ab'
-assert s.removeDuplicateLetters('bab') == 'ab'
+# assert s.removeDuplicateLetters('') == ''
+# assert s.removeDuplicateLetters('ab') == 'ab'
+# assert s.removeDuplicateLetters('aba') == 'ab'
+# assert s.removeDuplicateLetters('bab') == 'ab'
 assert s.removeDuplicateLetters('bcabc') == 'abc'
-assert s.removeDuplicateLetters('cbacdcbc') == 'acdb'
-assert s.removeDuplicateLetters('abca') == 'abc'
-assert s.removeDuplicateLetters('abcdabcd') == 'abcd'
-assert s.removeDuplicateLetters('cbacdcbc') == 'acdb'
+# assert s.removeDuplicateLetters('cbacdcbc') == 'acdb'
+# assert s.removeDuplicateLetters('abca') == 'abc'
+# assert s.removeDuplicateLetters('abcdabcd') == 'abcd'
+# assert s.removeDuplicateLetters('cbacdcbc') == 'acdb'

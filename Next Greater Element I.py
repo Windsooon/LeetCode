@@ -5,13 +5,20 @@ class Solution:
         :type nums2: List[int]
         :rtype: List[int]
         """
+        if not nums1 or not nums2:
+            return []
+        dic = {}
+        stack = []
+        for i in range(len(nums2)):
+            while stack and stack[-1] < nums2[i]:
+                tem = stack.pop()
+                dic[tem] = nums2[i]
+            stack.append(nums2[i])
+        
         ans = []
-        for n in nums1:
-            index = nums2.index(n)
-            for i in range(index+1, len(nums2)):
-                if nums2[i] > n:
-                    ans.append(nums2[i])
-                    break
+        for i in range(len(nums1)):
+            if nums1[i] in dic:
+                ans.append(dic[nums1[i]])
             else:
                 ans.append(-1)
         return ans
