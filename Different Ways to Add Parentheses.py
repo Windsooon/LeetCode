@@ -1,26 +1,35 @@
 class Solution:
     def diffWaysToCompute(self, input):
+        return self.recursion(input)
+
+    def recursion(self, input):
+        """
+        append all valid answer to self.ans with recursion
+        >>> recursion('2-1-1')
+        >>> self.ans == [0, 2]
+        >>> True
+        """
         if input.isdigit():
             return [int(input)]
-        res = []
-        import pdb; pdb.set_trace()
+        ans = []
         for i in range(len(input)):
-            if input[i] in "-+*":
-                res1 = self.diffWaysToCompute(input[:i])
-                res2 = self.diffWaysToCompute(input[i+1:])
-                for j in res1:
-                    for k in res2:
-                        res.append(self.helper(j, k, input[i]))
-        return res
+            if input[i] in ('+', '-', '*'):
+                left = self.diffWaysToCompute(input[:i])
+                right = self.diffWaysToCompute(input[i+1:])
+                for l in left:
+                    for r in right:
+                        tem = self.helper(l, r, input[i])
+                        ans.append(tem)
+        return ans
 
-    def helper(self, m, n, op):
-        if op == "+":
-            return m+n
-        elif op == "-":
-            return m-n
+
+    def helper(self, left, right, oper):
+        if oper == '+':
+            return left + right
+        elif oper == '-':
+            return left - right
         else:
-            return m*n
-
+            return left * right
 
 s = Solution()
-s.diffWaysToCompute("2*3-4*5")
+print(s.diffWaysToCompute("2*3-4*5"))
