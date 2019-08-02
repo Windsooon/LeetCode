@@ -1,31 +1,39 @@
-import collections 
+import collections
+import queue
 
+# How many edges we have?
+# What inside the edges? number or string or val
 class Solution:
     def sumOfDistancesInTree(self, N, edges):
         tree = collections.defaultdict(set)
-        res = [0] * N
-        count = [1] * N
+        self.res = [0] * N
+        self.count = [1] * N
+        self.N = N
         for i, j in edges:
             tree[i].add(j)
             tree[j].add(i)
+        self.post_order(0, tree, set([0]))
+        self.pre_order(0, tree, set([0]))
 
-        def dfs(root, pre):
-            for i in tree[root]:
-                if i != pre:
-                    dfs(i, root)
-                    count[root] += count[i]
-                    res[root] += res[i] + count[i]
+        return self.res
 
-        def dfs2(root, pre):
-            for i in tree[root]:
-                if i != pre:
-                    res[i] = res[root] - count[i] + N - count[i]
-                    dfs2(i, root)
-        dfs(0, -1)
-        dfs2(0, -1)
-        return res
+    def post_order(self, node, tree, visited):
+        for n in tree[node]:
+            if n not in visited:
+                visited.add(n)
+                self.post_order(n, tree, visited)
+                self.count[node] += self.count[n]
+                self.res[node] += self.res[n] + self.count[n]
+
+    def pre_order(self, node, tree, visited):
+        for n in tree[node]:
+            if n not in visited:
+                self.res[n] = self.res[node] - self.count[n] + self.N - self.count[n]
+                visited.add(n)
+                self.pre_order(n, tree, visited)
+
 
 N = 6
 edges = [[0,1],[0,2],[2,3],[2,4],[2,5]]
 s = Solution()
-print(s.sumOfDistancesInTree(N, edges))
+s.sumOfDistancesInTree(N, edges)
