@@ -14,7 +14,7 @@ class Solution:
             mid = left + (right-left)//2
             current_version = isBadVersion(mid)
             if current_version:
-
+                pass
             else:
                 left = mid
         return 1

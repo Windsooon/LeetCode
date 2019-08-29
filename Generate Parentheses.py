@@ -10,5 +10,21 @@ class Solution(object):
             return answer
         return helper('', n, n)
 
+class Solution:
+    def generateParenthesis(self, n):
+        """
+        :type n: int
+        :rtype: List[str]
+        """
+        breakpoint()
+        dp = [[] for i in range(n + 1)]
+        dp[0].append('')
+        for i in range(n + 1):
+            for j in range(i):
+                for x in dp[j]:
+                    for y in dp[i-j-1]:
+                        dp[i] += ['(' + x + ')' + y]
+        return dp[n]
+
 a = Solution()
 print(a.generateParenthesis(3))

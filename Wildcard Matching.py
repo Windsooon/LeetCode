@@ -1,29 +1,6 @@
-class Solution:
-    def isMatch(self, s, p):
-        """
-        :type s: str
-        :type p: str
-        :rtype: bool
-        """
-        s = ' ' + s
-        p = ' ' + p
-        lst = [False] * len(p)
-        lst[0] = True
-        # a*c?b
-        # [True, False, False, False, False, False]
-        for i in range(1, len(lst)):
-            # ' **ab' -> [True, True, True, False, False]
-            if p[i] == '*' and lst[i-1]:
-                lst[i] = True
-        old = lst[:]
-        for i in range(1, len(s)):
-            for j in range(len(p)):
-                if p[j] == '*':
-                    lst[j] = lst[j-1] or lst[j]
-                else:
-                    lst[j] = old[j-1] and (p[j] == s[i] or p[j] == '?')
-            old = lst[:]
-        return lst[-1]
+
+
+
 
 
 class Solution:
@@ -54,18 +31,57 @@ class Solution:
         accept = current
         return res, accept
 
+class Solution:
+    def isMatch(self, s, p):
+        self.visited = dict()
+        self.count = 0
+        ans = self.match(s, p)
+        print(self.count)
+        return ans
 
+    def match(self, s, p):
+        self.count += 1
+        if (s, p) in self.visited:
+            breakpoint()
+            return self.visited[(s, p)]
+        if not s and not p:
+            self.visited[(s, p)] = True
+            return True
+        if not s:
+            if len(set(p)) == 1 and p[0] == '*':
+                self.visited[(s, p)] = True
+                return True
+            else:
+                self.visited[(s, p)] = False
+                return False
+        if not p:
+            self.visited[(s, p)] = False
+            return False
+        if p[0] == '*':
+            boolean = self.match(s[1:], p) or self.match(s, p[1:])
+        else:
+            if s[0] == p[0] or p[0] == '?':
+                boolean = self.match(s[1:], p[1:])
+            else:
+                self.visited[(s, p)] = False
+                return False
+        self.visited[(s, p)] = boolean
+        return boolean
 
 
 
 s = Solution()
-assert s.isMatch('adcec', 'a*c?c') is True
-assert s.isMatch('acdcb', 'a*c?b') is False
-assert s.isMatch('adceb', '*a*b') is True
-assert s.isMatch('adceb', '*a*') is True
-assert s.isMatch('cd', '?a') is False
-assert s.isMatch('aa', '*') is True
-assert s.isMatch('aa', 'a') is False
-assert s.isMatch('a', '') is False
-assert s.isMatch('aab', 'c*a*b') is False
-assert s.isMatch('ho', '**ho') is True
+# assert s.isMatch('', '*') is True
+# assert s.isMatch('ho', 'ho**') is True
+# assert s.isMatch('adcec', 'a*c?c') is True
+# assert s.isMatch('acdcb', 'a*c?b') is False
+# assert s.isMatch('adceb', '*a*b') is True
+# assert s.isMatch('adceb', '*a*') is True
+# assert s.isMatch('cd', '?a') is False
+# assert s.isMatch('aa', '*') is True
+# assert s.isMatch('aa', 'a') is False
+# assert s.isMatch('a', '') is False
+# assert s.isMatch('aab', 'c*a*b') is False
+# assert s.isMatch('ho', '**ho') is True
+assert s.isMatch('ab', '***ab') is True
+# assert s.isMatch('aaabababaaabaababbbaaaabbbbbbabbbbabbbabbaabbababab', '*ab***ba**b*b*aaab*b') is True

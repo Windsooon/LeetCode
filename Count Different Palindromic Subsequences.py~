@@ -1,0 +1,22 @@
+class Solution:
+    def countPalindromicSubsequences(self, S: str) -> int:
+        if not S:
+            return 0
+        return self.dfs(0, len(S), S)
+
+    def dfs(self, start, end, S):
+        String = S[start:end]
+        for char in 'abcd':
+            start_index = String.index(char)
+            end_index = String.rindex(char)
+            if start_index == end_index:
+                count = 1
+            else:
+                count = 3 + self.dfs(start+1, end-1, S)
+        return count
+
+            
+
+s = Solution()
+S = 'bccb'
+s.countPalindromicSubsequences(S)

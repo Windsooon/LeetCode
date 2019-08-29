@@ -1,50 +1,67 @@
+import collections
+import queue
 
-def shortestWordEditPath(source, target, words):
-    count = 0
-    return shortestWordEditPathRecur(source, target, words, count)
+class Solution:
+    def shortestSuperstring(self, A):
+        lst = self.build_graph(A)
+        return self.prim(lst, A)
 
-# find all words that are within edit distance one to the source
-# for each one of these words I want to call the function again, with source = word
-# source == target or -1 
+    def calculate_distance(self, str1, str2):
+        first = second = 0
+        for i in range(len(str2)):
+            if str1.startswith(str2[i:]):
+                first = len(str2) - i
+        for i in range(len(str1)):
+            if str2.startswith(str1[i:]):
+                second = len(str1) - i
+        return -second, -first
+
+    def build_graph(self, A):
+        dic = collections.defaultdict(list)
+        for i in range(len(A)):
+            for j in range(i+1, len(A)):
+                first, second = self.calculate_distance(A[i], A[j])
+                dic[A[i]].append((first, A[i], A[j]))
+                dic[A[j]].append((second, A[j], A[i]))
+        return dic
+
+    # def Borůvka(self, dic, A):
+    #     graph = []
+    #     safe_edges = [(0, 0), 0] * len(A)
+    #     for k in dic:
+    #         for l in k:
+    #             if safe_edges[k] == 0 or l[1] > safe_edges[k][1]:
+    #                 safe_edges[k] = [(k, l[0]), l[1]]
+    #     for s in safe_edges:
+    #         graph.append(s)
+    def prim(self, lst, A):
+        qu = queue.PriorityQueue()
+        ans = []
+        visited = set()
+        qu.put(lst[next(iter(lst))])
+        while len(visited) < len(A):
+            vertex_lst = []
+            while not qu.empty():
+                vertex_lst.append(qu.get())
+            tem_qu = queue.PriorityQueue()
+            for vertex in vertex_lst:
+                for v in vertex:
+                    tem_qu.put(v)
+            while not tem_qu.empty():
+                edges = tem_qu.get()
+                if not (edges[1] in visited and edges[2] in visited):
+                    ans.append(edges)
+                    break
+            visited.add(edges[1])
+            visited.add(edges[2])
+            for v in visited:
+                qu.put(lst[v])
+                qu.put(lst[v])
+        return ans
 
 
-def shortestWordEditPathRecur(source, target, words, count):
-  if source == target:
-    return count
-  
-  edit_words = find_edit_words(source,words)
-  for word in edit_words:
-    new_words = words[:]
-    new_words.remove(source)
-    count = shortestWordEditPathRecur(word,target, new_words, count+1)
-    if count:
-        return count
-    
-def find_edit_words(source,words):
-  # problem is in this function
-  source_chars = list(source)
-  edit_words = []
-  for word in words:
-    if word == source:
-      continue
-    curr_word_chars = list(word)
-    if is_edit(source_chars, curr_word_chars):
-      edit_words.append(word)
-  return edit_words      
-    
-    
-def is_edit(chars_s, chars_t):
-  if len(chars_s) != len(chars_t):
-    return False
-  mismatch_counter = 0
-  for char_s, char_t in zip(chars_s,chars_t):#do we need to the *?
-    if char_s != char_t:
-      mismatch_counter +=1
-      
-  return mismatch_counter == 1 
-    
 
-source = "bit"
-target = "dog"
-words = ["bit", "but", "put", "big", "pot", "pog", "dog", "lot"]
-print(shortestWordEditPath(source, target, words))
+s = Solution()
+A = ["catg","ctaagt","gcta","ttca","atgcatc"]
+# A = ["catg", "ctaagt", "gcta"]
+print(s.shortestSuperstring(A))

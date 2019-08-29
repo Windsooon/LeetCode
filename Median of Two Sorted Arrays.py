@@ -34,10 +34,53 @@ class Solution(object):
             else:
                 return self.k_element(nums1[:nums1_mid], nums2, k)
 
+class Solution:
+    def findMedianSortedArrays(self, nums1, nums2):
+        if not nums1 and not nums2:
+            return
+        length = len(nums1) + len(nums2)
+        if length % 2 == 0:
+            return (self.find(length // 2, nums1, nums2) + self.find(length // 2 - 1, nums1, nums2)) / 2
+        else:
+            return self.find(length // 2, nums1, nums2)
+
+    def find(self, k, nums1, nums2):
+        index_1 = 0
+        index_2 = 0
+        # k = 1
+        while k:
+            if index_1 < len(nums1) and index_2 < len(nums2):
+                if nums1[index_1] <= nums2[index_2]:
+                    index_1 += 1
+                else:
+                    index_2 += 1
+                k -= 1
+            elif index_1 < len(nums1):
+                return nums1[index_1+k]
+            else:
+                return nums2[index_2+k]
+
+        if index_1 < len(nums1) and index_2 < len(nums2):
+            if nums1[index_1] < nums2[index_2]:
+                return nums1[index_1]
+            else:
+                return nums2[index_2]
+
+        if index_1 < len(nums1):
+            return nums1[index_1+k]
+        else:
+            return nums2[index_2+k]
 
 s = Solution()
-# print(s.findMedianSortedArrays([2, 3], [4]))
-assert s.findMedianSortedArrays([], []) is None
-assert s.findMedianSortedArrays([2], [4]) == 3.0
-assert s.findMedianSortedArrays([1, 3], [2]) == 2.0
-assert s.findMedianSortedArrays([1, 2], [3, 4]) == 2.5
+nums1 = []
+nums2 = [2, 3]
+assert (s.findMedianSortedArrays(nums1, nums2)) == 2.5
+nums1 = [1, 2]
+nums2 = [3, 4]
+assert (s.findMedianSortedArrays(nums1, nums2)) == 2.5
+nums1 = [1, 3]
+nums2 = [2]
+assert (s.findMedianSortedArrays(nums1, nums2)) == 2
+nums1 = [1, 2]
+nums2 = [3]
+assert (s.findMedianSortedArrays(nums1, nums2)) == 2

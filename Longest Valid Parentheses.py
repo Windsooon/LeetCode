@@ -15,12 +15,27 @@ class Solution(object):
                 stack.append(i)
         return result
 
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        count = 0
+        lst = list(s)
+        state = True
+        valid = [True] * len(s)
+        while state:
+            state = False
+            for i in range(len(lst)-1):
+                if valid[i] == True and (lst[i], lst[i+1]) == ('(', ')'):
+                    count += 2
+                    valid[i] = valid[i+1] = False
+                    state = True
+        return count
+
 
 s = Solution()
+assert (s.longestValidParentheses('()()')) == 4
 assert (s.longestValidParentheses('(')) == 0
 assert (s.longestValidParentheses(')(')) == 0
 assert (s.longestValidParentheses('()')) == 2
-assert (s.longestValidParentheses('()()')) == 4
 assert (s.longestValidParentheses(')()')) == 2
 assert (s.longestValidParentheses('(()')) == 2
 assert (s.longestValidParentheses('(()(((()')) == 2
