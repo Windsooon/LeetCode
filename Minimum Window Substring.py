@@ -20,8 +20,32 @@ class Solution:
                 missing += 1
         return s[left:right+1]
 
+import collections
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        d = collections.defaultdict(int)
+        for i in range(len(t)):
+            d[t[i]] += 1
+        need = len(t)
+        start = end = 0
+        min_len = (0, float('inf'))
+        while end < len(s):
+            if d[s[end]] > 0:
+                need -= 1
+            d[s[end]] -= 1
+            while need == 0:
+                if start <= end:
+                    if end - start < min_len[1] - min_len[0]:
+                        min_len = (start, end)
+                d[s[start]] += 1
+                if d[s[start]] > 0:
+                    need += 1
+                start += 1
+            end += 1
+        return s[min_len[0]:min_len[1]+1]
 
 s = Solution()
-S = "ACBECDEBANC"
-T = "ABC"
+S = "ADOBECODEBANC"
+T = ""
 print(s.minWindow(S, T))
