@@ -27,6 +27,7 @@ class Solution:
         d = collections.defaultdict(int)
         for i in range(len(t)):
             d[t[i]] += 1
+        
         need = len(t)
         start = end = 0
         min_len = (0, float('inf'))

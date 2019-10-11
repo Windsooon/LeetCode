@@ -1,41 +1,38 @@
 class Solution:
-    def canFinish(self, numCourses, prerequisites):
-        self.dic = {}
-        self.visited = {}
-        # need to take this course first
-        # [[1, 0]], 0 is needed
-        needed = set()
-        # [[1, 0]], 1 is needed
-        taked = set()
-        for p in prerequisites:
-            taked.add(p[0])
-            needed.add(p[1])
-        finish_course = needed-taked
-        for f in finish_course:
-            self.dic[f] = True
-        for p in prerequisites:
-            if not self.dp(p[0], prerequisites):
-                return False
+    def canFinish(self, numCourses: int, prerequisites):
+        self.new = [True] * numCourses
+        self.graph = self.create_graph(prerequisites)
+        self.active = [False] * numCourses
+        for i in range(len(self.new)):
+            if self.new[i]:
+                # found cycle
+                if self.detect(i):
+                    return False
         return True
-
-    def dp(self, num, prerequisites):
-        if num in self.dic:
-            return self.dic[num]
-        lst = []
-        for i in range(len(prerequisites)):
-            if i not in self.visited:
-                if prerequisites[i][0] == num:
-                    self.visited[i] = True
-                    lst.append(prerequisites[i][1])
-        if not lst:
+                
+    def detect(self, index):
+        self.active[index] = True
+        self.new[index] = False
+        if index not in self.graph:
+            self.active[index] = False
             return False
-        for l in lst:
-            if not self.dp(l, prerequisites):
-                self.dic[num] = False
-                return False
-        self.dic[num] = True
-        return True
+        for child in self.graph[index]:
+            if self.active[child]:
+                return True
+            else:
+                if self.detect(child):
+                    return True
+        self.active[index] = False
+        return False
+    
+    def create_graph(self, prerequisites):
+        import collections
+        d = collections.defaultdict(list)
+        for pre in prerequisites:
+            d[pre[0]].append(pre[1])
+        return d
 
 s = Solution()
 print(s.canFinish(2, [[1,0]]))
 print(s.canFinish(2, [[1,0],[0,1]]))
+print(s.canFinish(3,[[1,0],[1,2],[0,1]]))

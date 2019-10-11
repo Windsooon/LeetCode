@@ -1,20 +1,17 @@
 class Solution:
     def find132pattern(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: bool
-        """
-        # awesome solution
-        # 3, 1, 4, 2
-        prevMax, recordMax = float('-inf'), []
-        for e in nums[::-1]:
-            # [4]
-            if e < prevMax: return True
-            while recordMax and recordMax[-1] < e:
-                # prevMax = 2
-                prevMax = recordMax.pop()
-            # [4]
-            recordMax.append(e)
+        if len(nums) < 3:
+            return False
+        current_min = [nums[0]]
+        for i in range(len(nums)):
+            current_min.append(min(nums[i], current_min[-1]))
+        stack = []
+        for i in range(len(nums)):
+            while stack and stack[-1] > nums[i]:
+                top = stack.pop()
+                if nums[i] > current_min[i]:
+                    return True
+            stack.append(nums[i])
         return False
 
 s = Solution()

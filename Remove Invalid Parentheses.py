@@ -1,62 +1,46 @@
-from queue import Queue
 class Solution:
-    def removeInvalidParentheses(self, s):
-        self.q = Queue()
-        self.visit = {}
-        if not s:
-            return [""]
-        self.res = []
-        self.q.put(s)
-        self.bfs()
-        return self.res if self.res else [""]
+    def removeInvalidParentheses(self, s: str):
+        current = []
+        current.append(s)
+        ans = []
+        visited = set()
+        while current:
+            tem = []
+            for top in current:
+                if self.isValid(s):
+                    return [s]
+                for i in range(len(top)):
+                    if top[:i]+top[i+1:] not in visited:
+                        visited.add(top[:i]+top[i+1:])
+                        if self.isValid(top[:i]+top[i+1:]) and top[:i]+top[i+1:] not in ans:
+                            ans.append(top[:i]+top[i+1:])
+                        tem.append(top[:i]+top[i+1:])
+            if not ans:
+                current = tem
+            else:
+                return ans
 
-    def bfs(self):
-        # base case
-        while 1:
-            if self.q.empty():
-                return
-            val = self.q.get()
-            if val in self.visit:
-                continue
-            self.visit[val] = True
-            if self.isValid(val):
-                self.res.append(val)
-                return
-            if len(val) == 1:
-                return
-            for i in range(len(val)+1):
-                string = val[:i]+val[i+1:]
-                if string:
-                    self.q.put(string)
-                    if self.isValid(string):
-                        if string not in self.res:
-                            print(val)
-                            self.res.append(string)
-            if self.res:
-                return
-        return
-
-
-    def isValid(self, tem):
-        left = right = 0
-        for t in tem:
-            if t == '(':
-                left += 1
-            elif t == ')':
-                right += 1
-            if right > left:
-                return False
-        return left == right
-
+    def isValid(self, s):
+        count = 0
+        for i in range(len(s)):
+            if s[i] == '(':
+                count += 1
+            elif s[i] == ')':
+                count -= 1
+                if count < 0:
+                    return False
+        return count == 0
 
 s = Solution()
-# assert s.removeInvalidParentheses('n') == ['n']
-# assert s.removeInvalidParentheses('nn') == ['nn']
-# assert s.removeInvalidParentheses('n)(') == ['n']
-# assert s.removeInvalidParentheses('(n)') == ['(n)']
-# assert s.removeInvalidParentheses('()())()') == ['(())()', '()()()']
-# assert s.removeInvalidParentheses('(a)())()') == ["(a())()", "(a)()()"]
-# assert s.removeInvalidParentheses(')(') == [""]
-# assert s.removeInvalidParentheses('()(j))(') == ["((j))"]
-# assert s.removeInvalidParentheses(")((((((((") == [""]
-print(s.removeInvalidParentheses("(k()("))
+
+assert s.removeInvalidParentheses('n') == ['n']
+assert s.removeInvalidParentheses('nn') == ['nn']
+assert s.removeInvalidParentheses('n)(') == ['n']
+assert s.removeInvalidParentheses('(n)') == ['(n)']
+assert s.removeInvalidParentheses('()())()') == ['(())()', '()()()']
+assert s.removeInvalidParentheses('(a)())()') == ["(a())()", "(a)()()"]
+assert s.removeInvalidParentheses(')(') == [""]
+assert s.removeInvalidParentheses(")((((((((") == [""]
+# (s.removeInvalidParentheses("(k()("))
+assert s.removeInvalidParentheses("(((k()((") == ["k()","(k)"]
+print(s.removeInvalidParentheses("()(((((((()"))

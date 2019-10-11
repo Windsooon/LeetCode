@@ -4,17 +4,15 @@ class Solution:
         :type triangle: List[List[int]]
         :rtype: int
         """
-        ans = 0
-        start = 0
-        end = 1
-        for t in triangle:
-            min_element = min(t[start:end+1])
-            ans += min_element
-            new = t.index(min_element)
-            start = new
-            end = new + 1
-        return ans
+        if not triangle:
+            return 0
+        dp = triangle[-1]
+        for i in range(len(triangle)-2, -1, -1):
+            for j in range(len(triangle[i])):
+                dp[j] = triangle[i][j] + min(dp[j], dp[j+1])
+        return dp[0]
 
 tri = [[-1],[2,3],[1,-1,-3]]
+
 s = Solution()
 print(s.minimumTotal(tri))

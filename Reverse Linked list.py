@@ -12,38 +12,18 @@ class ListNode:
 
 
 class Solution:
-    def reverseList(self, head):
-        """
-        :type head: ListNode
-        :rtype: ListNode
-        """
-        if not head:
-            return
-        # 1->2->3->4->5
-        # prev->None
-        prev = head
-        current = head.next
-        print(current is head.next)
-        prev.next = None
-        print(current is head.next)
-        # current = 2
-        while current:
-            # next = 3
-            next = current.next
-            # 2->1->None
-            current.next = prev
-            prev = current
-            current = next
-        return prev
+    def reverseList(self, head: ListNode) -> ListNode:
+        self.dummy = ListNode(10)
+        head = self.recursion(head)
+        head.next = None
+        return self.dummy.next
 
-    def reverseList2(self, head):
-        prev = None
-        while head:
-            curr = head
-            head = head.next
-            curr.next = prev
-            prev = curr
-        return prev
+    def recursion(self, head):
+        if not head:
+            return self.dummy
+        pre = self.recursion(head.next)
+        pre.next = head
+        return head
 
 
 l = ListNode(1)

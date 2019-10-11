@@ -2,33 +2,30 @@ import collections
 
 class Solution:
     def findAnagrams(self, s: str, p: str):
-        if not s or len(s) < len(p):
+        if not s:
             return []
         ans = []
-        current_dic = self.expected_sum(s, len(p))
-        expected_dic = self.expected_sum(p, len(p))
-        if current_dic == expected_dic:
-            ans.append(0)
-        for i in range(1, len(s)-len(p)+1):
-            current_dic[s[i-1]] -= 1
-            if current_dic[s[i-1]] == 0:
-                del current_dic[s[i-1]]
-            current_dic[s[i+len(p)-1]] += 1
-            if current_dic == expected_dic:
-                ans.append(i)
+        need_dict = collections.defaultdict(int)
+        for i in range(len(p)):
+            need_dict[p[i]] += 1
+        need = len(p)
+        for i in range(len(s)):
+            if i - len(p) >= 0:
+                need_dict[s[i-len(p)]] += 1
+                if need_dict[s[i-len(p)]] > 0:
+                    need += 1
+            need_dict[s[i]] -= 1
+            if need_dict[s[i]] >= 0:
+                need -= 1
+            if need == 0:
+                ans.append(i-len(p)+1)
         return ans
-
-    def expected_sum(self, input, length):
-        dic = collections.defaultdict(int)
-        for i in range(length):
-            dic[input[i]] += 1
-        return dic
 
 
 
 
 
 s = Solution()
-str = "abab"
-p = "ab"
+str = "baa"
+p = "aa"
 print(s.findAnagrams(str, p))
