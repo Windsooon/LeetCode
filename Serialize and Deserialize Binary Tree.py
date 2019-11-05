@@ -1,63 +1,56 @@
-# Definition for a binary tree node.
-import queue
-
-class TreeNode(object):
+class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
+# Definition for a binary tree node.
 class Codec:
 
     def serialize(self, root):
         """Encodes a tree to a single string.
+        
         :type root: TreeNode
         :rtype: str
         """
+        # breakpoint()
         if not root:
-            return
-        import queue
-        ans = [root.val]
-        q = queue.Queue()
-        q.put(root)
-        while not q.empty():
-            top = q.get()
-            if top:
-                for child in [top.left, top.right]:
-                    if child:
-                        ans.append(child.val)
-                        q.put(child)
-                    else:
-                        ans.append(None)
-        return ans
-     
-        
+            return []
+        res = [root.val]
+        level = [root]
+        while level:
+            tem = []
+            for l in level:
+                if l:
+                    for child in [l.left, l.right]:
+                        tem.append(child)
+            res.extend(i.val if i else None for i in tem)
+            level = tem
+        return res
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
-        
         :type data: str
         :rtype: TreeNode
         """
-        count = 0
-        root = TreeNode(data[count])
-        q = queue.Queue()
-        q.put(root)
-        while not q.empty():
-            top = q.get()
-            count += 1
-            if data[count]:
-                top.left = TreeNode(data[count])
-                q.put(top.left)
-            else:
-                top.left = None
-            count += 1
-            if data[count]:
-                top.right = TreeNode(data[count])
-                q.put(top.right)
-            else:
-                top.right = None
-
+        # breakpoint()
+        if not data:
+            return
+        root = TreeNode(data[0])
+        level = [root]
+        current_index = 0
+        while level and current_index < len(data):
+            tem = []
+            for l in level:
+                current_index += 1
+                if current_index < len(data):
+                    l.left = TreeNode(data[current_index])
+                    tem.append(l.left)
+                current_index += 1
+                if current_index < len(data):
+                    l.right = TreeNode(data[current_index])
+                    tem.append(l.right)
+            level = tem
         return root
 
 a = TreeNode(1)
@@ -72,4 +65,6 @@ c.right = e
 # Your Codec object will be instantiated and called as such:
 codec = Codec()
 res = codec.serialize(a)
-codec.deserialize(res)
+root = codec.deserialize(res)
+breakpoint()
+print(100)

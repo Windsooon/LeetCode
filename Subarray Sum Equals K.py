@@ -20,6 +20,20 @@ class Solution:
                 q.put((index, val))
         return count
 
+class Solution:
+    def subarraySum(self, nums, k: int) -> int:
+        pre_sum = [0]
+        for i in range(len(nums)):
+            pre_sum.append(nums[i]+pre_sum[-1])
+        seen = dict()
+        count = 0
+        # sum[i:j] = sum[0:j] - sum[0:i]
+        for i in range(len(pre_sum)):
+            if pre_sum[i] - k in seen.values():
+                count += 1
+            seen[i] = pre_sum[i]
+        return count
+
 nums = [1, 1, 1]
 k = 2
 s = Solution()

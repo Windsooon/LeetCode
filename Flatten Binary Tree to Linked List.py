@@ -5,28 +5,29 @@ class TreeNode(object):
         self.left = None
         self.right = None
 
-class Solution:
-    def flatten(self, root: TreeNode) -> None:
+class Solution(object):
+    def flatten(self, root):
         """
-        Do not return anything, modify root in-place instead.
+        :type root: TreeNode
+        :rtype: None Do not return anything, modify root in-place instead.
         """
-        if not root:
-            return
-        dummy = TreeNode(1)
-        breakpoint()
-        self.recursion(root, dummy)
-        root = dummy.next
-        
-    def recursion(self, node, pre):
-        pre.left = None
-        pre.right = node
-        current = node
-        if node.left:
-            tem = node.left
-            self.recursion(node.left, current)
-            current = tem
-        if node.right:
-            self.recursion(node.right, current)
+        dummy = pre = TreeNode(0)
+        while root:
+            pre.right = root
+            if root.left:
+                node = self.find_rightmost(root.left)
+                node.right = root.right
+                pre = root
+                root = root.left
+            else:
+                pre = root
+                root = root.right
+        return dummy.right
+    
+    def find_rightmost(self, node):
+        while node.right:
+            node = node.right
+        return node
 
 a = TreeNode(1)
 b = TreeNode(2)
@@ -45,4 +46,4 @@ s = Solution()
 z = s.flatten(a)
 while z:
     print(z.val)
-    z = z.next
+    z = z.right

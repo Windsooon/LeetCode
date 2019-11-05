@@ -29,18 +29,48 @@ class Solution:
             reverse = cur
             cur = next
 
-        print(pre.next.val)
         pre.next.next = cur
         pre.next = reverse
 
         return dummyNode.next
 
+class Solution:
+    def reverseBetween(self, head, m, n):
+        """
+        :type head: ListNode
+        :type m: int
+        :type n: int
+        :rtype: ListNode
+        """
+        breakpoint()
+        if not head or m == n: return head
+        p = dummy = ListNode(None)
+        dummy.next = head
+        for i in range(m-1): p = p.next
+        tail = p.next
+        print(tail)
+
+        for i in range(n-m):
+            tmp = p.next                  # a)
+            p.next = tail.next            # b)
+            tail.next = tail.next.next    # c)
+            p.next.next = tmp             # d)
+        return dummy.next
+
 a = ListNode(1)
 b = ListNode(2)
 c = ListNode(3)
 d = ListNode(4)
+e = ListNode(5)
 a.next = b
 b.next = c
 c.next = d
+d.next = e
 s = Solution()
-s.reverseBetween(a, 2, 4)
+# s.reverseBetween(a, 2, 4)
+
+f = ListNode(5)
+g = ListNode(6)
+f.next = g
+s = Solution()
+s.reverseBetween(5,1,2)

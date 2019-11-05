@@ -92,20 +92,49 @@ class Solution:
                 return True
         return False
 
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        if not s:
+            return 0
+        dp = [0] * (len(s)+1)
+        dp[0] = 1
+        dp[1] = 1 if s[0] != '0' else 0
+        # x1262
+        # [1, 1, 2, x, x]
+        for i in range(2, len(dp)):
+            if s[i-1] != '0':
+                if self.valid(s[i-2:i]):
+                    dp[i] = dp[i-1] + dp[i-2]
+                else:
+                    dp[i] = dp[i-1]
+            else:
+                if self.valid(s[i-2:i]):
+                    dp[i] = dp[i-2]
+                else:
+                    return 0
+        return dp[-1]
+
+    def valid(self, string):
+        if '0' < string[0] < '3':
+            if string[0] == '2':
+                return string[1] < '7'
+            return True
+        return False
+
 
 s = Solution()
-str = '17'
-assert s.numDecodings(str) == 2
-str = '10'
-assert s.numDecodings(str) == 1
+str = '0'
+assert s.numDecodings(str) == 0
 str = '306'
 assert s.numDecodings(str) == 0
+str = '10'
+assert s.numDecodings(str) == 1
+str = '17'
+assert s.numDecodings(str) == 2
 str = '12'
 assert s.numDecodings(str) == 2
 str = '226'
 assert s.numDecodings(str) == 3
-str = '0'
-assert s.numDecodings(str) == 0
 str = '27'
 assert s.numDecodings(str) == 1
 str = '101'

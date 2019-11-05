@@ -1,14 +1,19 @@
+import random
+
 class Solusion:
     def select_sort(self, lst):
         for i in range(len(lst)):
-            min_val = (lst[i], i)
-            for l in range(i, len(lst)):
-                if lst[l] < min_val[0]:
-                    min_val = (lst[l], l)
-            lst[i], lst[min_val[1]] = lst[min_val[1]], lst[i]
+            min_index = i
+            for j in range(i+1, len(lst)):
+                if lst[j] < lst[min_index]:
+                    min_index = j
+            lst[i], lst[min_index] = lst[min_index], lst[i]
         return lst
 
 
 s = Solusion()
 lst = [38, 27, 43, 3, 9, 82, 10]
-print(s.select_sort(lst))
+random.shuffle(lst)
+assert(s.select_sort(lst) == [3, 9, 10, 27, 38, 43, 82])
+random.shuffle(lst)
+assert(s.select_sort(lst) == [3, 9, 10, 27, 38, 43, 82])

@@ -46,7 +46,38 @@ class Solution:
             end += 1
         return s[min_len[0]:min_len[1]+1]
 
+import collections
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        if not s or not t:
+            return ''
+        dic = collections.defaultdict(int)
+        for s_t in t:
+            dic[s_t] += 1
+        need = len(t)
+        up, down, ans = 0, 0, ''
+        while up < len(s):
+            # ADOBECODEBANC
+            if s[up] not in dic:
+                up += 1
+                continue
+            else:
+                if dic[s[up]] > 0:
+                    need -= 1
+                dic[s[up]] -= 1
+                while need == 0:
+                    if ans == '' or up - down < len(ans):
+                        ans = s[down:up+1]
+                    if s[down] in dic:
+                        dic[s[down]] += 1
+                        if dic[s[down]] == 1:
+                            need += 1
+                    down += 1
+                up += 1
+        return ans
+
 s = Solution()
-S = "ADOBECODEBANC"
-T = ""
+S = "aa"
+T = "aa"
 print(s.minWindow(S, T))

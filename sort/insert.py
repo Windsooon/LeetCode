@@ -1,18 +1,19 @@
+import random
+
 class Solusion:
-    def helper(self, lst, n):
-        '''
-        Sort first n elements in lst
-        '''
-        if n <= 1:
-            return lst
-        lst = self.helper(lst, n-1)
-        last = lst[n-1]
-        num = n-1
-        while num > 0 and lst[num-1] > last:
-            lst[num] = lst[num-1]
-            num -= 1
-        lst[num] = last
+    def insert_sort(self, lst):
+        for i in range(1, len(lst)):
+            key = lst[i]
+            j = i-1
+            while j >= 0 and key < lst[j]:
+                lst[j+1] = lst[j]
+                j -= 1
+            lst[j+1] = key
         return lst
 
-    def insert_sort_recursive(self, lst):
-        return self.helper(lst, len(lst))
+s = Solusion()
+lst = [38, 27, 43, 3, 9, 82, 10]
+random.shuffle(lst)
+assert(s.insert_sort(lst) == [3, 9, 10, 27, 38, 43, 82])
+random.shuffle(lst)
+assert(s.insert_sort(lst) == [3, 9, 10, 27, 38, 43, 82])
