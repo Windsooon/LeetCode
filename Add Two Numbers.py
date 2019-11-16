@@ -5,6 +5,10 @@ class ListNode:
         self.next = None
 
 class Solution:
+    # 1. while l1 or l2 or add_one is the key
+    # edge case:
+    # l1 = 5
+    # l2 = 5
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
         dummy = start = ListNode(None)
         add_one = 0
