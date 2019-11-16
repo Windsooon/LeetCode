@@ -13,6 +13,7 @@ class Solution(object):
         """
         dummy = pre = TreeNode(0)
         while root:
+            pre.left = 
             pre.right = root
             if root.left:
                 node = self.find_rightmost(root.left)

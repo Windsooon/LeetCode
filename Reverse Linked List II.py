@@ -48,8 +48,6 @@ class Solution:
         dummy.next = head
         for i in range(m-1): p = p.next
         tail = p.next
-        print(tail)
-
         for i in range(n-m):
             tmp = p.next                  # a)
             p.next = tail.next            # b)

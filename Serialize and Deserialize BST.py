@@ -33,7 +33,6 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        breakpoint()
         lst  = collections.deque(data.split(','))
         def decode(min_val, max_val):
             if not lst:
