@@ -26,7 +26,6 @@ class Solution:
         for x, y in edges:
             if not uf.union(x, y):
                 return False
-        breakpoint()
         return len(set([uf.find(i) for i in range(n)])) == 1
 
 n = 2000

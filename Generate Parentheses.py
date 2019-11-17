@@ -16,7 +16,6 @@ class Solution:
         :type n: int
         :rtype: List[str]
         """
-        breakpoint()
         dp = [[] for i in range(n + 1)]
         dp[0].append('')
         for i in range(n + 1):
@@ -26,5 +25,29 @@ class Solution:
                         dp[i] += ['(' + x + ')' + y]
         return dp[n]
 
+class Solution:
+    def generateParenthesis(self, n: int):
+        if n <= 0:
+            return []
+        if n == 1:
+            return ['()']
+        self.ans = []
+        self.dfs(n-1, '()')
+        return self.ans
+    
+    def dfs(self, n, current):
+        if n == 0:
+            self.ans.append(current)
+            return
+        for i in range(len(current)):
+            left = current[:i].count('(')
+            right = current[:i].count(')')
+            if left >= right:
+                self.dfs(n-1, current[:i] + '()' + current[i:])
+
 a = Solution()
 print(a.generateParenthesis(3))
+# ()()
+# (())
+
+# ()()()

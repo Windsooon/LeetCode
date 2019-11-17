@@ -1,4 +1,6 @@
 class Solution(object):
+    # 1. sort()
+    # 2. two pointer
     def threeSumClosest(self, nums, target):
         """
         :type nums: List[int]

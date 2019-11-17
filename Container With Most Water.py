@@ -1,3 +1,4 @@
+'''
 The graph look like this, We set two points at the first and the last element, then keep compare two value, than move the pointer which own the least value.  
     y 
     |
@@ -23,5 +24,20 @@ When we move the pointer from the first and the last element. We will meet one o
     ans > a<i> * (j-i+k)  (3)
 
 if a<i> <= a<j>:
-   ans = a<i> * (j-i) 
+   ans = a<i> * (j-i)
 
+'''
+class Solution:
+    # two pointer
+    def maxArea(self, height: List[int]) -> int:
+        if not height:
+            return 0
+        left, right = 0, len(height)-1
+        max_count = 0
+        while left < right:
+            max_count = max(max_count, min(height[left], height[right]) * (right-left))
+            if height[left] <= height[right]:
+                left += 1
+            else:
+                right -= 1
+        return max_count
