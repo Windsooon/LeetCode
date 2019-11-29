@@ -8,6 +8,7 @@ class ListNode(object):
 class Solution:
     def swapPairs(self, head):
         pre, pre.next = self, head
+        # 1, 2, 3, 4
         while pre.next and pre.next.next:
             a = pre.next
             b = a.next
