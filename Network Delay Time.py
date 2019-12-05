@@ -53,7 +53,8 @@ class Solution:
         return mx if mx < float("inf") else -1
 
 s = Solution()
-N = 4
+N = 3
 K = 2
-times = [[2,1,1],[2,3,1],[3,4,1]]
+times = [[1,2,1],[2,3,7],[1,3,4],[2,1,2]]
+breakpoint()
 print(s.networkDelayTime(times, N, K))
